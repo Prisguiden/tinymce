@@ -1,10 +1,3 @@
-/**
- * Copyright (c) Tiny Technologies, Inc. All rights reserved.
- * Licensed under the LGPL or a commercial license.
- * For LGPL see License.txt in the project root for license information.
- * For commercial licenses see https://www.tiny.cloud/
- */
-
 import Tools from 'tinymce/core/api/util/Tools';
 import Settings from '../api/Settings';
 import Utils from '../core/Utils';
@@ -52,20 +45,25 @@ const onBeforeCall = function (evt) {
 };
 
 const getGeneralItems = function (editor, imageListCtrl) {
-  const generalFormItems = [
-    {
-      name: 'src',
-      type: 'filepicker',
-      filetype: 'image',
-      label: 'Source',
-      autofocus: true,
-      onchange (evt) {
-        onSrcChange(evt, editor);
+
+  let generalFormItems = [];
+
+  if (Settings.hasImageUrl(editor)) {
+    generalFormItems = [
+      {
+        name: 'src',
+        type: 'filepicker',
+        filetype: 'image',
+        label: 'Source',
+        autofocus: true,
+        onchange (evt) {
+          onSrcChange(evt, editor);
+        },
+        onbeforecall: onBeforeCall
       },
-      onbeforecall: onBeforeCall
-    },
-    imageListCtrl
-  ];
+      imageListCtrl
+    ];
+  }
 
   if (Settings.hasDescription(editor)) {
     generalFormItems.push({ name: 'alt', type: 'textbox', label: 'Image description' });
